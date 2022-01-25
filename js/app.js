@@ -1,8 +1,9 @@
 'use strict';
 // Jeffrey Jenkins; Code 201 Week 3 Project "Bus Mall"; Created 1-24-22
 
-let votingAreaElem = document.getElementById('container');
+let votingAreaElem = document.getElementById('img-container');
 let showResultsButton = document.getElementById('show-results-btn');
+let counterElem = document.getElementById('round-counter');
 
 // let imgElems = votingAreaElem.getElementsByClassName();
 let img1 = document.getElementById('img1');
@@ -10,7 +11,7 @@ let img2 = document.getElementById('img2');
 let img3 = document.getElementById('img3');
 
 let imgElems = [img1,img2,img3];
-let currentProducts = [];
+let renderedProducts = [];
 
 const productFiles = [
   'bag',
@@ -61,6 +62,7 @@ let prevProduct;
 
 let maxRounds = 25;
 let counter = 0;
+counterElem.innerText = counter;
 
 // The product name needs to match the product image file name
 function Product(productName, fileExtension = 'jpg') {
@@ -69,7 +71,6 @@ function Product(productName, fileExtension = 'jpg') {
   this.views = 0;
   this.votes = 0;
   this.shown = false;
-  productArray.push(this);
 }
 
 Product.prototype.markAsShown = function () {
@@ -79,7 +80,8 @@ Product.prototype.markAsShown = function () {
 
 function constructProducts(productNameArr, productFileExtArr) {
   for (let i = 0; i < productNameArr.length; i++) {
-    new Product(productNameArr[i], productFileExtArr[i]);
+    let newProduct = new Product(productNameArr[i], productFileExtArr[i]);
+    productArray.push(newProduct);
   }
 }
 
@@ -97,14 +99,16 @@ function handleClick(event){
   console.log(event);
   console.log(event.target);
   let clickedImgIndex = imgElems.indexOf(event.target);
-  if (clickedImgIndex !== -1){
-    currentProducts[clickedImgIndex].votes++;
-    counter++;
-  }
-  if (counter >= 25){
+  if (counter >= maxRounds){
     unhideButton();
+  } else {
+    if (clickedImgIndex !== -1){
+      renderedProducts[clickedImgIndex].votes++;
+      counter++;
+      counterElem.innerText = counter;
+      renderProducts(event);
+    }
   }
-  renderProducts(event);
 }
 
 /*
@@ -113,7 +117,7 @@ RENDER FUNCTIONS
 
 function renderProducts() {
   console.log(productArray);
-  currentProducts = [];
+  renderedProducts = [];
 
   // This sequence splices out two random product, then uses slice to pull a 3rd random product
   // With the first two spliced out in sequence, all 3 will be different
@@ -127,7 +131,7 @@ function renderProducts() {
   productTwo.markAsShown();
   productThree.markAsShown();
 
-  currentProducts.push(productOne, productTwo, productThree);
+  renderedProducts.push(productOne, productTwo, productThree);
 
   // Since Product Two doesn't need to be removed from rotation, it's now being pushed back into the productArray
   productArray.push(productTwo);
@@ -149,6 +153,11 @@ function renderProducts() {
   console.log(productArray);
 }
 
+
+
+function unhideButton() {
+  showResultsButton.setAttribute('style', 'color: black');
+}
 /*
 HELPER FUNCTIONS
 */
