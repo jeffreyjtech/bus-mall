@@ -59,6 +59,7 @@ let resultsReady = false;
 
 const productArray = [];
 
+// This array stores the indices of the currently rendered products.
 let renderedProds = [];
 
 let prodDisplayQty = 3;
@@ -111,7 +112,7 @@ FUNCTION CALLS
 
 constructProducts(productFiles, productFileExts);
 
-renderProducts(prodDisplayQty);
+renderProducts();
 
 votingAreaElem.addEventListener('click', handleClick);
 
@@ -132,7 +133,7 @@ function handleClick(event){
       counter++;
       counterElem.innerText = counter;
       unrenderAllProducts();
-      renderProducts(prodDisplayQty);
+      renderProducts();
     }
   }
   // console.log(resultsReady && event.target === resultsButton);
@@ -147,15 +148,17 @@ RENDER FUNCTIONS
 */
 
 function unrenderAllProducts(){
+
   for (let i = 0; i < imgElems.length; i++){
     imgContainer.removeChild(imgElems[i]);
   }
 }
 
-function renderProducts(qty) {
-  for (let i = 0; i < qty; i++){
+function renderProducts() {
+  for (let i = 0; i < prodDisplayQty; i++){
+    let prevSet = renderedProds;
     let newProdIndex = randomProduct();
-    while (renderedProds.includes(newProdIndex)){
+    while (renderedProds.includes(newProdIndex) && prevSet.includes(newProdIndex)){
       newProdIndex = randomProduct();
     }
     renderedProds[i] = newProdIndex;
