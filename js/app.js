@@ -67,6 +67,10 @@ let maxRounds = 25;
 let counter = 0;
 counterElem.innerText = counter;
 
+/*
+Constructor function and prototype methods
+*/
+
 // The product name needs to match the product image file name
 function Product(productName, fileExtension = 'jpg') {
   this.name = productName;
@@ -94,12 +98,9 @@ Product.prototype.constructListItem = function () {
   }
 };
 
-function constructProducts(productNameArr, productFileExtArr) {
-  for (let i = 0; i < productNameArr.length; i++) {
-    let newProduct = new Product(productNameArr[i], productFileExtArr[i]);
-    productArray.push(newProduct);
-  }
-}
+/*
+FUNCTION CALLS
+*/
 
 constructProducts(productFiles, productFileExts);
 
@@ -115,7 +116,7 @@ function handleClick(event){
   // console.log(event);
   // console.log(event.target);
   let clickedImgIndex = imgElems.indexOf(event.target);
-  if (counter >= maxRounds){
+  if (counter === maxRounds){
     renderReadyStatus();
   } else {
     if (clickedImgIndex !== -1){
@@ -191,6 +192,13 @@ function renderReadyStatus() {
 /*
 HELPER FUNCTIONS
 */
+
+function constructProducts(productNameArr, productFileExtArr) {
+  for (let i = 0; i < productNameArr.length; i++) {
+    let newProduct = new Product(productNameArr[i], productFileExtArr[i]);
+    productArray.push(newProduct);
+  }
+}
 
 function randomProduct() {
   return Math.floor(Math.random() * productArray.length);
