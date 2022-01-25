@@ -112,8 +112,8 @@ EVENT HANDLERS
 */
 
 function handleClick(event){
-  console.log(event);
-  console.log(event.target);
+  // console.log(event);
+  // console.log(event.target);
   let clickedImgIndex = imgElems.indexOf(event.target);
   if (counter >= maxRounds){
     renderReadyStatus();
@@ -125,7 +125,7 @@ function handleClick(event){
       renderProducts(event);
     }
   }
-  console.log(resultsReady && event.target === resultsButton);
+  // console.log(resultsReady && event.target === resultsButton);
   if (resultsReady && event.target === resultsButton){
     renderResults();
     votingAreaElem.removeEventListener('click', handleClick);
@@ -137,7 +137,7 @@ RENDER FUNCTIONS
 */
 
 function renderProducts() {
-  console.log(productArray);
+  // console.log(productArray);
   renderedProducts = [];
 
   // This sequence splices out two random product, then uses slice to pull a 3rd random product
@@ -165,13 +165,13 @@ function renderProducts() {
 
   // This is where productOne is stored while it's out of rotation
   prevProduct = productOne;
-  console.log(prevProduct);
+  // console.log(prevProduct);
 
   img1.setAttribute('src', productOne.src);
   img2.setAttribute('src', productTwo.src);
   img3.setAttribute('src', productThree.src);
 
-  console.log(productArray);
+  // console.log(productArray);
 }
 
 function renderResults (){
