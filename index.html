@@ -9,26 +9,33 @@
 
   </head>
   <body>
-    <header>
+    <div id="grid-container">
+      <header>
+        <h1>Bus Mall Product Interest Survey</h1>
+      </header>
+      
+      <aside>
+        <h2>Voting results:</h2>
+        <p><i>Complete 25 voting rounds to enable results display</i></p>
+      </aside>
 
-    </header>
-
-    <aside>
-
-    </aside>
-
-    <main>
-      <div id="container">
-        <img src="" alt="" id="img1" class='product-image'>
-        <img src="" alt="" id="img2" class='product-image'>
-        <img src="" alt="" id="img3" class='product-image'>  
-      </div>
-      <div id="show-results-btn">
-        Show results
-      </div>
-
-    </main>
-    
+      <main>
+        <h2>Click on which product you like the most</h2>
+        <section id="img-container">
+          <img src="" alt="" id="img1" class='product-image'>
+          <img src="" alt="" id="img2" class='product-image'>
+          <img src="" alt="" id="img3" class='product-image'>  
+        </section>
+        <section class="i-o">
+          <div id="show-results-btn" class="btn">
+            Show results
+          </div>
+          <div>
+            Voting round: <span id="round-counter"></span>
+          </div>
+        </section>
+      </main>
+    </div>
     <footer>
 
     </footer>
