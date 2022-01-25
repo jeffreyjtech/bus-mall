@@ -5,9 +5,7 @@ let votingAreaElem = document.getElementById('interaction-area');
 let resultsButton = document.getElementById('show-results-btn');
 let counterElem = document.getElementById('round-counter');
 let readyStatusElem = document.getElementById('results-status');
-let resultsElem = document.getElementById('results-list');
-
-// let imgElems = votingAreaElem.getElementsByClassName();
+// let resultsElem = document.getElementById('results-list');
 let imgContainer = document.getElementById('img-container');
 
 let imgElems = [];
@@ -138,7 +136,8 @@ function handleClick(event){
   }
   // console.log(resultsReady && event.target === resultsButton);
   if (resultsReady && event.target === resultsButton){
-    renderResults();
+    // renderResults();
+    renderChart();
     votingAreaElem.removeEventListener('click', handleClick);
   }
 }
@@ -148,7 +147,6 @@ RENDER FUNCTIONS
 */
 
 function unrenderAllProducts(){
-
   for (let i = 0; i < imgElems.length; i++){
     imgContainer.removeChild(imgElems[i]);
   }
@@ -170,13 +168,13 @@ function renderProducts() {
   console.log(renderedProds);
 }
 
-function renderResults (){
-  readyStatusElem.setAttribute('style','display:none');
-  for (let i = 0; i < productArray.length; i++){
-    let newLiElem = productArray[i].constructListItem();
-    resultsElem.appendChild(newLiElem);
-  }
-}
+// function renderResults (){
+//   readyStatusElem.setAttribute('style','display:none');
+//   for (let i = 0; i < productArray.length; i++){
+//     let newLiElem = productArray[i].constructListItem();
+//     resultsElem.appendChild(newLiElem);
+//   }
+// }
 
 function renderReadyStatus() {
   resultsButton.setAttribute('style', 'color: black; background-color: #ddd; box-shadow: 1px 1px 3px black;');
@@ -184,6 +182,31 @@ function renderReadyStatus() {
   resultsReady = true;
 }
 
+function renderChart(){
+  let viewData = [];
+  let voteData = [];
+  for (let i = 0; i < productArray.length; i++){
+    viewData[i] = productArray[i].views;
+    voteData[i] = productArray[i].votes;
+  }
+  const ctxResults = document.getElementById('results-chart').getContext('2d');
+  const resultsChart = new Chart(ctxResults , {
+    type: 'bar',
+    data: {
+      labels: productFiles,
+      datasets: [{
+        label:'# of votes',
+        data:voteData,
+        indexAxis: 'y',
+      },
+      {
+        label:'# of views',
+        data:viewData,
+        indexAxis: 'y',
+      }]
+    }
+  });
+}
 /*
 HELPER FUNCTIONS
 */
