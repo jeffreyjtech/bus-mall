@@ -62,6 +62,8 @@ footer{
 section img{
   display: flexbox;
   max-height: 250px;
+  border: rgba(0, 0, 0, 0.479) 2px solid;
+  border-radius: 5px;
 }
 #show-results-btn{
   color: grey;
