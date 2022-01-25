@@ -1,7 +1,4 @@
 /* Jeffrey Jenkins; Code 201 Week 3 Project "Bus Mall"; Created 1-24-22 */
-i{
-  font-style: italic;
-}
 #grid-container{
   margin: 0px 30px;
   display: grid;
@@ -10,51 +7,67 @@ i{
   grid-auto-columns: minmax(200px, auto);
   gap: 30px;
 }
-#grid-container > *{
+/* #grid-container > *{
   border: 1px black solid;
-}
-/* main{
-  width: 80%;
-  margin: 0px auto;
 } */
 header{
   grid-column: 1/-1;
   grid-row: 1;
   height: 100px;
+  padding-top: 15px;
+  padding-left: 15px;
+}
+h1{
+  font-size: x-large;
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 }
 aside{
+  padding: 0.3em;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   max-width: 300px;
-  min-width: 200px;
+  min-width: 250px;
   grid-column: 1;
 }
+aside li{
+  font-size: smaller;
+  list-style-type: disc;
+  margin-left: 1.5em;
+  margin-top: 0.3em;
+}
+#results-status{
+  font-style: italic;
+  font-weight: 100;
+}
 main{
+  padding: 0.5em;
   grid-column: 2/-1;
+}
+main *{
+  margin-top: 15px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 footer{
   height: 100px;
   width: 100%;
   position: absolute;
   bottom: 0px;
-  border: solid black thin;
+  /* border: solid black thin; */
+  padding-left: 30px;
 }
 #img-container{
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-
 section img{
   display: flexbox;
   max-height: 250px;
 }
-
 #show-results-btn{
   color: grey;
+  padding: 0.2em;
   background-color: rgb(158, 158, 158);
-}
-.i-o div{
-  padding: 0.3em;
-  float: left;
+  border: rgb(128, 128, 128) thin solid;
 }
 .btn {
   display: inline-block;
