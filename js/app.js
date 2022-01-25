@@ -1,9 +1,11 @@
 'use strict';
 // Jeffrey Jenkins; Code 201 Week 3 Project "Bus Mall"; Created 1-24-22
 
-let votingAreaElem = document.getElementById('img-container');
-let showResultsButton = document.getElementById('show-results-btn');
+let votingAreaElem = document.getElementById('interaction-area');
+let resultsButton = document.getElementById('show-results-btn');
 let counterElem = document.getElementById('round-counter');
+let readyStatusElem = document.getElementById('results-status');
+let resultsElem = document.getElementById('results-list');
 
 // let imgElems = votingAreaElem.getElementsByClassName();
 let img1 = document.getElementById('img1');
@@ -12,6 +14,7 @@ let img3 = document.getElementById('img3');
 
 let imgElems = [img1,img2,img3];
 let renderedProducts = [];
+let resultsReady = false;
 
 const productFiles = [
   'bag',
@@ -78,6 +81,19 @@ Product.prototype.markAsShown = function () {
   this.views++;
 };
 
+Product.prototype.constructListItem = function () {
+  let liElem = document.createElement('li');
+  if (this.shown){
+    // nameElem = document.createElement('i');
+    // nameElem.innerText = this.name;
+    liElem.innerText = `${this.name} was chosen ${this.votes} times and viewed ${this.views} times`;
+    return liElem;
+  } else {
+    liElem.innerText = `${this.name} was not shown.`;
+    return liElem;
+  }
+};
+
 function constructProducts(productNameArr, productFileExtArr) {
   for (let i = 0; i < productNameArr.length; i++) {
     let newProduct = new Product(productNameArr[i], productFileExtArr[i]);
@@ -100,7 +116,7 @@ function handleClick(event){
   console.log(event.target);
   let clickedImgIndex = imgElems.indexOf(event.target);
   if (counter >= maxRounds){
-    unhideButton();
+    renderReadyStatus();
   } else {
     if (clickedImgIndex !== -1){
       renderedProducts[clickedImgIndex].votes++;
@@ -108,6 +124,11 @@ function handleClick(event){
       counterElem.innerText = counter;
       renderProducts(event);
     }
+  }
+  console.log(resultsReady && event.target === resultsButton);
+  if (resultsReady && event.target === resultsButton){
+    renderResults();
+    votingAreaElem.removeEventListener('click', handleClick);
   }
 }
 
@@ -153,14 +174,24 @@ function renderProducts() {
   console.log(productArray);
 }
 
-
-
-function unhideButton() {
-  showResultsButton.setAttribute('style', 'color: black');
+function renderResults (){
+  readyStatusElem.setAttribute('style','display:none');
+  for (let i = 0; i < productArray.length; i++){
+    let newLiElem = productArray[i].constructListItem();
+    resultsElem.appendChild(newLiElem);
+  }
 }
+
+function renderReadyStatus() {
+  resultsButton.setAttribute('style', 'color: black; background-color: #ddd; box-shadow: 1px 1px 3px black;');
+  readyStatusElem.innerText = 'Press "View Results"';
+  resultsReady = true;
+}
+
 /*
 HELPER FUNCTIONS
 */
+
 function randomProduct() {
   return Math.floor(Math.random() * productArray.length);
 }
