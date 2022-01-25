@@ -11,3 +11,6 @@ Bus Mall is a prestigious product catalog, found in your local public transporta
 ## Reflections and Comments
 
 ### Lab 11
+
+- I did not hit any major roadblocks with this assignment. That said it was still a lot of coding and, as per usual, more CSS fiddling than I would care to admit.
+- The favorite part of my code is how I use array methods to both prevent the same image from rendering twice in one set AND preventing the same image set from being displayed twice in a row.
