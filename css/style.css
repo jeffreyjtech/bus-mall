@@ -1,5 +1,5 @@
 /* Jeffrey Jenkins; Code 201 Week 3 Project "Bus Mall"; Created 1-24-22 */
-#grid-container{
+.grid-parent{
   margin: 0px 30px;
   display: grid;
   grid-template-columns: 1fr 4fr;
