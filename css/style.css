@@ -1,15 +1,62 @@
 /* Jeffrey Jenkins; Code 201 Week 3 Project "Bus Mall"; Created 1-24-22 */
-main{
+i{
+  font-style: italic;
+}
+#grid-container{
+  margin: 0px 30px;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: auto 1fr auto;
+  grid-auto-columns: minmax(200px, auto);
+  gap: 30px;
+}
+#grid-container > *{
+  border: 1px black solid;
+}
+/* main{
   width: 80%;
   margin: 0px auto;
+} */
+header{
+  grid-column: 1/-1;
+  grid-row: 1;
+  height: 100px;
 }
-#container{
+aside{
+  max-width: 300px;
+  min-width: 200px;
+  grid-column: 1;
+}
+main{
+  grid-column: 2/-1;
+}
+footer{
+  height: 100px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  border: solid black thin;
+}
+#img-container{
   display: flex;
-  justify-content:space-around;
+  justify-content: space-between;
   align-items: center;
 }
 
-#container img{
+section img{
   display: flexbox;
   max-height: 250px;
+}
+
+#show-results-btn{
+  color: grey;
+  background-color: rgb(158, 158, 158);
+}
+.i-o div{
+  padding: 0.3em;
+  float: left;
+}
+.btn {
+  display: inline-block;
+  border-radius: 3px;
 }
