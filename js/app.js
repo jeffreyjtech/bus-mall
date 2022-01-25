@@ -158,7 +158,7 @@ function renderProducts() {
   for (let i = 0; i < prodDisplayQty; i++){
     let prevSet = renderedProds;
     let newProdIndex = randomProduct();
-    while (renderedProds.includes(newProdIndex) && prevSet.includes(newProdIndex)){
+    while (renderedProds.includes(newProdIndex) || prevSet.includes(newProdIndex)){
       newProdIndex = randomProduct();
     }
     renderedProds[i] = newProdIndex;
