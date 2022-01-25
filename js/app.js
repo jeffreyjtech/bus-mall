@@ -4,9 +4,13 @@
 let votingAreaElem = document.getElementById('container');
 let showResultsButton = document.getElementById('show-results-btn');
 
+// let imgElems = votingAreaElem.getElementsByClassName();
 let img1 = document.getElementById('img1');
 let img2 = document.getElementById('img2');
 let img3 = document.getElementById('img3');
+
+let imgElems = [img1,img2,img3];
+let currentProducts = [];
 
 const productFiles = [
   'bag',
@@ -60,7 +64,6 @@ let counter = 0;
 
 // The product name needs to match the product image file name
 function Product(productName, fileExtension = 'jpg') {
-  this.name = '';
   this.name = productName;
   this.src = `img/${productName}.${fileExtension}`;
   this.views = 0;
@@ -71,6 +74,7 @@ function Product(productName, fileExtension = 'jpg') {
 
 Product.prototype.markAsShown = function () {
   this.shown = true;
+  this.views++;
 };
 
 function constructProducts(productNameArr, productFileExtArr) {
@@ -81,8 +85,35 @@ function constructProducts(productNameArr, productFileExtArr) {
 
 constructProducts(productFiles, productFileExts);
 
+renderProducts();
+
+votingAreaElem.addEventListener('click', handleClick);
+
+/*
+EVENT HANDLERS
+*/
+
+function handleClick(event){
+  console.log(event);
+  console.log(event.target);
+  let clickedImgIndex = imgElems.indexOf(event.target);
+  if (clickedImgIndex !== -1){
+    currentProducts[clickedImgIndex].votes++;
+    counter++;
+  }
+  if (counter >= 25){
+    unhideButton();
+  }
+  renderProducts(event);
+}
+
+/*
+RENDER FUNCTIONS
+*/
+
 function renderProducts() {
   console.log(productArray);
+  currentProducts = [];
 
   // This sequence splices out two random product, then uses slice to pull a 3rd random product
   // With the first two spliced out in sequence, all 3 will be different
@@ -95,6 +126,8 @@ function renderProducts() {
   productOne.markAsShown();
   productTwo.markAsShown();
   productThree.markAsShown();
+
+  currentProducts.push(productOne, productTwo, productThree);
 
   // Since Product Two doesn't need to be removed from rotation, it's now being pushed back into the productArray
   productArray.push(productTwo);
@@ -116,10 +149,9 @@ function renderProducts() {
   console.log(productArray);
 }
 
-renderProducts();
-
-votingAreaElem.addEventListener('click', renderProducts);
-
+/*
+HELPER FUNCTIONS
+*/
 function randomProduct() {
   return Math.floor(Math.random() * productArray.length);
 }
