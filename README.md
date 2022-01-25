@@ -1,6 +1,6 @@
 # Bus Mall
 
-Bus Mall is prestigious product catalog, found in your local public transportation vehicles. This site is a market research tool for understanding the wants of Bus Mall readers.
+Bus Mall is a prestigious product catalog, found in your local public transportation vehicles. This site is a market research tool for understanding the wants of Bus Mall readers.
 
 ## Author: Jeffrey Jenkins
 
