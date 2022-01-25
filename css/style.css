@@ -1,1 +1,15 @@
 /* Jeffrey Jenkins; Code 201 Week 3 Project "Bus Mall"; Created 1-24-22 */
+main{
+  width: 80%;
+  margin: 0px auto;
+}
+#container{
+  display: flex;
+  justify-content:space-around;
+  align-items: center;
+}
+
+#container img{
+  display: flexbox;
+  max-height: 250px;
+}
