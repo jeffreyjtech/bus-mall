@@ -5,7 +5,6 @@ let votingAreaElem = document.getElementById('interaction-area');
 let resultsButton = document.getElementById('show-results-btn');
 let counterElem = document.getElementById('round-counter');
 let readyStatusElem = document.getElementById('results-status');
-// let resultsElem = document.getElementById('results-list');
 let imgContainer = document.getElementById('img-container');
 
 let imgElems = [];
@@ -87,8 +86,6 @@ Product.prototype.markAsShown = function () {
 Product.prototype.constructListItem = function () {
   let liElem = document.createElement('li');
   if (this.shown){
-    // nameElem = document.createElement('i');
-    // nameElem.innerText = this.name;
     liElem.innerText = `${this.name} was chosen ${this.votes} times and viewed ${this.views} times`;
     return liElem;
   } else {
@@ -119,8 +116,6 @@ EVENT HANDLERS
 */
 
 function handleClick(event){
-  // console.log(event);
-  // console.log(event.target);
   let clickedImgIndex = imgElems.indexOf(event.target);
   let productIndex = renderedProds[clickedImgIndex];
   if (counter === maxRounds){
@@ -134,9 +129,8 @@ function handleClick(event){
       renderProducts();
     }
   }
-  // console.log(resultsReady && event.target === resultsButton);
   if (resultsReady && event.target === resultsButton){
-    // renderResults();
+    readyStatusElem.innerText = '1st bar is votes, 2nd bar is views';
     renderChart();
     votingAreaElem.removeEventListener('click', handleClick);
   }
@@ -168,13 +162,6 @@ function renderProducts() {
   console.log(renderedProds);
 }
 
-// function renderResults (){
-//   readyStatusElem.setAttribute('style','display:none');
-//   for (let i = 0; i < productArray.length; i++){
-//     let newLiElem = productArray[i].constructListItem();
-//     resultsElem.appendChild(newLiElem);
-//   }
-// } 
 
 function renderReadyStatus() {
   resultsButton.setAttribute('style', 'color: black; background-color: #ddd; box-shadow: 1px 1px 3px black;');
@@ -198,6 +185,7 @@ function renderChart(){
         label:'# of votes',
         data:voteData,
         indexAxis: 'y',
+        backgroundColor: '#ada'
       },
       {
         label:'# of views',
