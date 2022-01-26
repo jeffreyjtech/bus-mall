@@ -30,9 +30,8 @@ const productFiles = [
   'water-can',
   'wine-glass',
 ];
-// The elements in this array for file extensions can be null for every file which is a .jpg
+// The elements in this array for file extensions can be null for every file which is a .jpg, only index 14 is a .png
 const productFileExts = [];
-
 productFileExts[14] = 'png';
 
 let resultsReady = false;
@@ -80,7 +79,7 @@ Product.prototype.constructListItem = function () {
 Product.prototype.constructImgElem = function () {
   let imgElem = document.createElement('img');
   imgElem.setAttribute('src',this.src);
-  console.log(imgElem);
+  // console.log(imgElem);
   return imgElem;
 };
 
@@ -101,11 +100,12 @@ EVENT HANDLERS
 function handleClick(event){
   let clickedImgIndex = imgElems.indexOf(event.target);
   let productIndex = renderedProds[clickedImgIndex];
-  if (counter === maxRounds){
-    renderReadyStatus();
+  if (clickedImgIndex > -1){
     productArray[productIndex].votes++;
-  } else {
-    if (clickedImgIndex > -1){
+    if (counter === maxRounds){
+      resultsReady = true;
+      renderReadyStatus();
+    } else {
       counter++;
       counterElem.innerText = counter;
       unrenderAllProducts();
@@ -142,14 +142,13 @@ function renderProducts() {
     imgElems[i] = newImgElem;
     productArray[newProdIndex].markAsShown();
   }
-  console.log(renderedProds);
+  // console.log(renderedProds);
 }
 
 
 function renderReadyStatus() {
   resultsButton.setAttribute('style', 'color: black; background-color: #ddd; box-shadow: 1px 1px 3px black;');
   readyStatusElem.innerText = 'Press "View Results"';
-  resultsReady = true;
 }
 
 function renderChart(){
@@ -178,6 +177,7 @@ function renderChart(){
     }
   });
 }
+
 /*
 HELPER FUNCTIONS
 */
