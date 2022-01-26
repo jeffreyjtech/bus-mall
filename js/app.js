@@ -5,16 +5,9 @@ let votingAreaElem = document.getElementById('interaction-area');
 let resultsButton = document.getElementById('show-results-btn');
 let counterElem = document.getElementById('round-counter');
 let readyStatusElem = document.getElementById('results-status');
-let resultsElem = document.getElementById('results-list');
+let imgContainer = document.getElementById('img-container');
 
-// let imgElems = votingAreaElem.getElementsByClassName();
-let img1 = document.getElementById('img1');
-let img2 = document.getElementById('img2');
-let img3 = document.getElementById('img3');
-
-let imgElems = [img1,img2,img3];
-let renderedProducts = [];
-let resultsReady = false;
+let imgElems = [];
 
 const productFiles = [
   'bag',
@@ -59,13 +52,22 @@ const productFileExts = [
   'jpg',
 ];
 
+let resultsReady = false;
+
 const productArray = [];
 
-let prevProduct;
+// This array stores the indices of the currently rendered products.
+let renderedProds = [];
+
+let prodDisplayQty = 3;
 
 let maxRounds = 25;
 let counter = 0;
 counterElem.innerText = counter;
+
+/*
+Constructor function and prototype methods
+*/
 
 // The product name needs to match the product image file name
 function Product(productName, fileExtension = 'jpg') {
@@ -84,8 +86,6 @@ Product.prototype.markAsShown = function () {
 Product.prototype.constructListItem = function () {
   let liElem = document.createElement('li');
   if (this.shown){
-    // nameElem = document.createElement('i');
-    // nameElem.innerText = this.name;
     liElem.innerText = `${this.name} was chosen ${this.votes} times and viewed ${this.views} times`;
     return liElem;
   } else {
@@ -94,12 +94,16 @@ Product.prototype.constructListItem = function () {
   }
 };
 
-function constructProducts(productNameArr, productFileExtArr) {
-  for (let i = 0; i < productNameArr.length; i++) {
-    let newProduct = new Product(productNameArr[i], productFileExtArr[i]);
-    productArray.push(newProduct);
-  }
-}
+Product.prototype.constructImgElem = function () {
+  let imgElem = document.createElement('img');
+  imgElem.setAttribute('src',this.src);
+  console.log(imgElem);
+  return imgElem;
+};
+
+/*
+FUNCTION CALLS
+*/
 
 constructProducts(productFiles, productFileExts);
 
@@ -112,22 +116,22 @@ EVENT HANDLERS
 */
 
 function handleClick(event){
-  // console.log(event);
-  // console.log(event.target);
   let clickedImgIndex = imgElems.indexOf(event.target);
-  if (counter >= maxRounds){
+  let productIndex = renderedProds[clickedImgIndex];
+  if (counter === maxRounds){
     renderReadyStatus();
   } else {
-    if (clickedImgIndex !== -1){
-      renderedProducts[clickedImgIndex].votes++;
+    if (clickedImgIndex > -1){
+      productArray[productIndex].votes++;
       counter++;
       counterElem.innerText = counter;
-      renderProducts(event);
+      unrenderAllProducts();
+      renderProducts();
     }
   }
-  // console.log(resultsReady && event.target === resultsButton);
   if (resultsReady && event.target === resultsButton){
-    renderResults();
+    readyStatusElem.innerText = '1st bar is votes, 2nd bar is views';
+    renderChart();
     votingAreaElem.removeEventListener('click', handleClick);
   }
 }
@@ -136,51 +140,28 @@ function handleClick(event){
 RENDER FUNCTIONS
 */
 
+function unrenderAllProducts(){
+  for (let i = 0; i < imgElems.length; i++){
+    imgContainer.removeChild(imgElems[i]);
+  }
+}
+
 function renderProducts() {
-  // console.log(productArray);
-  renderedProducts = [];
-
-  // This sequence splices out two random product, then uses slice to pull a 3rd random product
-  // With the first two spliced out in sequence, all 3 will be different
-  // Furthermore, productOne will be out of rotation until AFTER the next comparison is chosen
-  // This prevents the lineup from being the same set of pics twice in a row
-  let [productOne] = productArray.splice(randomProduct(), 1);
-  let [productTwo] = productArray.splice(randomProduct(), 1);
-  let [productThree] = productArray.slice(randomProduct());
-
-  productOne.markAsShown();
-  productTwo.markAsShown();
-  productThree.markAsShown();
-
-  renderedProducts.push(productOne, productTwo, productThree);
-
-  // Since Product Two doesn't need to be removed from rotation, it's now being pushed back into the productArray
-  productArray.push(productTwo);
-
-  // This pushes the prevProduct back into rotation now that a new comparison has been chosen
-  // The if statement condition prevents prevProduct from being pushed in if this is the first round and it's undefined.
-  if (prevProduct !== undefined) {
-    productArray.push(prevProduct);
+  for (let i = 0; i < prodDisplayQty; i++){
+    let prevSet = renderedProds;
+    let newProdIndex = randomProduct();
+    while (renderedProds.includes(newProdIndex) || prevSet.includes(newProdIndex)){
+      newProdIndex = randomProduct();
+    }
+    renderedProds[i] = newProdIndex;
+    let newImgElem = productArray[newProdIndex].constructImgElem();
+    imgContainer.appendChild(newImgElem);
+    imgElems[i] = newImgElem;
+    productArray[newProdIndex].markAsShown();
   }
-
-  // This is where productOne is stored while it's out of rotation
-  prevProduct = productOne;
-  // console.log(prevProduct);
-
-  img1.setAttribute('src', productOne.src);
-  img2.setAttribute('src', productTwo.src);
-  img3.setAttribute('src', productThree.src);
-
-  // console.log(productArray);
+  console.log(renderedProds);
 }
 
-function renderResults (){
-  readyStatusElem.setAttribute('style','display:none');
-  for (let i = 0; i < productArray.length; i++){
-    let newLiElem = productArray[i].constructListItem();
-    resultsElem.appendChild(newLiElem);
-  }
-}
 
 function renderReadyStatus() {
   resultsButton.setAttribute('style', 'color: black; background-color: #ddd; box-shadow: 1px 1px 3px black;');
@@ -188,9 +169,42 @@ function renderReadyStatus() {
   resultsReady = true;
 }
 
+function renderChart(){
+  let viewData = [];
+  let voteData = [];
+  for (let i = 0; i < productArray.length; i++){
+    viewData[i] = productArray[i].views;
+    voteData[i] = productArray[i].votes;
+  }
+  const ctxResults = document.getElementById('results-chart').getContext('2d');
+  const resultsChart = new Chart(ctxResults , { //eslint-disable-line
+    type: 'bar',
+    data: {
+      labels: productFiles,
+      datasets: [{
+        label:'# of votes',
+        data:voteData,
+        indexAxis: 'y',
+        backgroundColor: '#ada'
+      },
+      {
+        label:'# of views',
+        data:viewData,
+        indexAxis: 'y',
+      }]
+    }
+  });
+}
 /*
 HELPER FUNCTIONS
 */
+
+function constructProducts(productNameArr, productFileExtArr) {
+  for (let i = 0; i < productNameArr.length; i++) {
+    let newProduct = new Product(productNameArr[i], productFileExtArr[i]);
+    productArray.push(newProduct);
+  }
+}
 
 function randomProduct() {
   return Math.floor(Math.random() * productArray.length);
