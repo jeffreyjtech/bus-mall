@@ -30,27 +30,10 @@ const productFiles = [
   'water-can',
   'wine-glass',
 ];
-const productFileExts = [
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'png',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-];
+// The elements in this array for file extensions can be null for every file which is a .jpg
+const productFileExts = [];
+
+productFileExts[14] = 'png';
 
 let resultsReady = false;
 
@@ -120,9 +103,9 @@ function handleClick(event){
   let productIndex = renderedProds[clickedImgIndex];
   if (counter === maxRounds){
     renderReadyStatus();
+    productArray[productIndex].votes++;
   } else {
     if (clickedImgIndex > -1){
-      productArray[productIndex].votes++;
       counter++;
       counterElem.innerText = counter;
       unrenderAllProducts();
