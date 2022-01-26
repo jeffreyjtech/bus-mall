@@ -116,8 +116,12 @@ function clearStorage() {
 
 function getUserHistory() {
   let userHistory = localStorage.getItem('userHistory');
+  // This if statement checks if the userHistory is null in order to prevent downstream errors
   if (userHistory !== null){
     userHistory = JSON.parse(userHistory);
+
+    // Using the .map iterable method, I'm grabbing the views and votes for each retrieved object and creating parallel arrays
+    // The "simpler" but less DRY alternative would be a for loop.
     let voteHistory = userHistory.map((element) => {
       return element.votes;
     });
@@ -125,7 +129,8 @@ function getUserHistory() {
       return element.views;
     });
     return [voteHistory, viewHistory];
-  } else {
+
+  } else { // If userHistory is null it returns the expected arrays but with no contents.
     return [[],[]];
   }
 }
@@ -134,7 +139,9 @@ function getUserHistory() {
 EVENT HANDLERS
 */
 
+// All of my interactivity is handled by this one handleClick function
 function handleClick(event) {
+  // This first block checks if a product was clicked and therefore voted on, and if the last voting has concluded
   let clickedImgIndex = imgElems.indexOf(event.target);
   let productIndex = renderedProds[clickedImgIndex];
   if (clickedImgIndex > -1) {
@@ -148,11 +155,13 @@ function handleClick(event) {
       unrenderAllProducts();
       renderProducts();
     }
+  // This checks if View Results was clicked
   }
   if (resultsReady && event.target === resultsButton) {
     readyStatusElem.innerText = '1st bar is votes, 2nd bar is views';
     renderChart();
   }
+  // This checks if Clear Storage was clicked and prompts the user to confirm storage deletion.
   if (event.target === clearStorageButton) {
     let confirmationResponse = prompt('Are you sure you want delete ALL stored results, including those from current voting session? Type \'delete\' to confirm');
     if(confirmationResponse === 'delete'){
@@ -160,7 +169,7 @@ function handleClick(event) {
       alert('Refresh the page to start another voting session.');
       votingAreaElem.removeEventListener('click', handleClick);
     }
-  } else {
+  } else { // Else the normal function call occurs to store the view and vote histories
     storeUserHistory();
   }
 }
