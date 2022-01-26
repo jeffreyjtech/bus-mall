@@ -233,6 +233,9 @@ function renderChart() {
         },
       ],
     },
+    options: {
+      aspectRatio: (1/4)
+    }
   });
 }
 
