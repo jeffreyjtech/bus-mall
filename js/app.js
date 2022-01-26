@@ -174,7 +174,7 @@ function renderProducts() {
 //     let newLiElem = productArray[i].constructListItem();
 //     resultsElem.appendChild(newLiElem);
 //   }
-// }
+// } 
 
 function renderReadyStatus() {
   resultsButton.setAttribute('style', 'color: black; background-color: #ddd; box-shadow: 1px 1px 3px black;');
@@ -190,7 +190,7 @@ function renderChart(){
     voteData[i] = productArray[i].votes;
   }
   const ctxResults = document.getElementById('results-chart').getContext('2d');
-  const resultsChart = new Chart(ctxResults , {
+  const resultsChart = new Chart(ctxResults , { //eslint-disable-line
     type: 'bar',
     data: {
       labels: productFiles,
