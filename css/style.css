@@ -65,13 +65,23 @@ section img{
   border: rgba(0, 0, 0, 0.479) 2px solid;
   border-radius: 5px;
 }
-#show-results-btn{
+.status-btn{
   color: grey;
-  padding: 0.2em;
   background-color: rgb(158, 158, 158);
+  padding: 0.2em;
   border: rgb(128, 128, 128) thin solid;
-}
-.btn {
   display: inline-block;
   border-radius: 3px;
+}
+.btn {
+  color: black;
+  padding: 0.2em;
+  background-color: #ddd;
+  border: rgb(128, 128, 128) thin solid;
+  display: inline-block;
+  border-radius: 3px;
+  box-shadow: 1px 1px 3px black;
+}
+#clear-storage-btn{
+  float: right;
 }
