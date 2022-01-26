@@ -7,13 +7,10 @@
   grid-auto-columns: minmax(200px, auto);
   gap: 30px;
 }
-/* #grid-container > *{
-  border: 1px black solid;
-} */
 header{
   grid-column: 1/-1;
   grid-row: 1;
-  height: 100px;
+  height: 35px;
   padding-top: 15px;
   padding-left: 15px;
 }
@@ -24,15 +21,8 @@ h1{
 aside{
   padding: 0.3em;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  max-width: 300px;
-  min-width: 250px;
+  width: 250px;
   grid-column: 1;
-}
-aside li{
-  font-size: smaller;
-  list-style-type: disc;
-  margin-left: 1.5em;
-  margin-top: 0.3em;
 }
 #results-status{
   font-style: italic;
@@ -41,6 +31,7 @@ aside li{
 main{
   padding: 0.5em;
   grid-column: 2/-1;
+  margin-right: 10%;
 }
 main *{
   margin-top: 15px;
@@ -65,13 +56,23 @@ section img{
   border: rgba(0, 0, 0, 0.479) 2px solid;
   border-radius: 5px;
 }
-#show-results-btn{
+.status-btn{
   color: grey;
-  padding: 0.2em;
   background-color: rgb(158, 158, 158);
+  padding: 0.2em;
   border: rgb(128, 128, 128) thin solid;
-}
-.btn {
   display: inline-block;
   border-radius: 3px;
+}
+.btn {
+  color: black;
+  padding: 0.2em;
+  background-color: #ddd;
+  border: rgb(128, 128, 128) thin solid;
+  display: inline-block;
+  border-radius: 3px;
+  box-shadow: 1px 1px 3px black;
+}
+#clear-storage-btn{
+  float: right;
 }

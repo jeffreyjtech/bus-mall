@@ -4,6 +4,7 @@
 let votingAreaElem = document.getElementById('interaction-area');
 let resultsButton = document.getElementById('show-results-btn');
 let counterElem = document.getElementById('round-counter');
+let clearStorageButton = document.getElementById('clear-storage-btn');
 let readyStatusElem = document.getElementById('results-status');
 let imgContainer = document.getElementById('img-container');
 
@@ -30,27 +31,9 @@ const productFiles = [
   'water-can',
   'wine-glass',
 ];
-const productFileExts = [
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-  'png',
-  'jpg',
-  'jpg',
-  'jpg',
-  'jpg',
-];
+// The elements in this array for file extensions can be null for every file which is a .jpg, only index 14 is a .png
+const productFileExts = [];
+productFileExts[14] = 'png';
 
 let resultsReady = false;
 
@@ -70,11 +53,11 @@ Constructor function and prototype methods
 */
 
 // The product name needs to match the product image file name
-function Product(productName, fileExtension = 'jpg') {
+function Product(productName, fileExtension = 'jpg', storedViews = 0, storedVotes = 0) {
   this.name = productName;
   this.src = `img/${productName}.${fileExtension}`;
-  this.views = 0;
-  this.votes = 0;
+  this.views = storedViews;
+  this.votes = storedVotes;
   this.shown = false;
 }
 
@@ -85,7 +68,7 @@ Product.prototype.markAsShown = function () {
 
 Product.prototype.constructListItem = function () {
   let liElem = document.createElement('li');
-  if (this.shown){
+  if (this.shown) {
     liElem.innerText = `${this.name} was chosen ${this.votes} times and viewed ${this.views} times`;
     return liElem;
   } else {
@@ -96,8 +79,7 @@ Product.prototype.constructListItem = function () {
 
 Product.prototype.constructImgElem = function () {
   let imgElem = document.createElement('img');
-  imgElem.setAttribute('src',this.src);
-  console.log(imgElem);
+  imgElem.setAttribute('src', this.src);
   return imgElem;
 };
 
@@ -105,34 +87,90 @@ Product.prototype.constructImgElem = function () {
 FUNCTION CALLS
 */
 
-constructProducts(productFiles, productFileExts);
+let [retrievedVotes, retrievedViews] = getUserHistory();
+
+constructProducts(
+  productFiles,
+  productFileExts,
+  retrievedViews,
+  retrievedVotes
+);
 
 renderProducts();
 
 votingAreaElem.addEventListener('click', handleClick);
 
 /*
+LOCAL STORAGE
+*/
+
+function storeUserHistory() {
+  let stringifiedProducts = JSON.stringify(productArray);
+  localStorage.setItem('userHistory', stringifiedProducts);
+}
+
+function clearStorage() {
+  localStorage.removeItem('userHistory');
+  console.log('Storage Cleared');
+}
+
+function getUserHistory() {
+  let userHistory = localStorage.getItem('userHistory');
+  // This if statement checks if the userHistory is null in order to prevent downstream errors
+  if (userHistory !== null){
+    userHistory = JSON.parse(userHistory);
+
+    // Using the .map iterable method, I'm grabbing the views and votes for each retrieved object and creating parallel arrays
+    // The "simpler" but less DRY alternative would be a for loop.
+    let voteHistory = userHistory.map((element) => {
+      return element.votes;
+    });
+    let viewHistory = userHistory.map((element) => {
+      return element.views;
+    });
+    return [voteHistory, viewHistory];
+
+  } else { // If userHistory is null it returns the expected arrays but with no contents.
+    return [[],[]];
+  }
+}
+
+/*
 EVENT HANDLERS
 */
 
-function handleClick(event){
+// All of my interactivity is handled by this one handleClick function
+function handleClick(event) {
+  // This first block checks if a product was clicked and therefore voted on, and if the last voting has concluded
   let clickedImgIndex = imgElems.indexOf(event.target);
   let productIndex = renderedProds[clickedImgIndex];
-  if (counter === maxRounds){
-    renderReadyStatus();
-  } else {
-    if (clickedImgIndex > -1){
-      productArray[productIndex].votes++;
+  if (clickedImgIndex > -1) {
+    productArray[productIndex].votes++;
+    if (counter === maxRounds) {
+      resultsReady = true;
+      renderReadyStatus();
+    } else {
       counter++;
       counterElem.innerText = counter;
       unrenderAllProducts();
       renderProducts();
     }
+  // This checks if View Results was clicked
   }
-  if (resultsReady && event.target === resultsButton){
+  if (resultsReady && event.target === resultsButton) {
     readyStatusElem.innerText = '1st bar is votes, 2nd bar is views';
     renderChart();
-    votingAreaElem.removeEventListener('click', handleClick);
+  }
+  // This checks if Clear Storage was clicked and prompts the user to confirm storage deletion.
+  if (event.target === clearStorageButton) {
+    let confirmationResponse = prompt('Are you sure you want delete ALL stored results, including those from current voting session? Type \'delete\' to confirm');
+    if(confirmationResponse === 'delete'){
+      clearStorage();
+      alert('Refresh the page to start another voting session.');
+      votingAreaElem.removeEventListener('click', handleClick);
+    }
+  } else { // Else the normal function call occurs to store the view and vote histories
+    storeUserHistory();
   }
 }
 
@@ -140,17 +178,17 @@ function handleClick(event){
 RENDER FUNCTIONS
 */
 
-function unrenderAllProducts(){
-  for (let i = 0; i < imgElems.length; i++){
+function unrenderAllProducts() {
+  for (let i = 0; i < imgElems.length; i++) {
     imgContainer.removeChild(imgElems[i]);
   }
 }
 
 function renderProducts() {
-  for (let i = 0; i < prodDisplayQty; i++){
-    let prevSet = renderedProds;
+  let prevSet = renderedProds;
+  for (let i = 0; i < prodDisplayQty; i++) {
     let newProdIndex = randomProduct();
-    while (renderedProds.includes(newProdIndex) || prevSet.includes(newProdIndex)){
+    while (renderedProds.includes(newProdIndex) || prevSet.includes(newProdIndex)) {
       newProdIndex = randomProduct();
     }
     renderedProds[i] = newProdIndex;
@@ -159,49 +197,65 @@ function renderProducts() {
     imgElems[i] = newImgElem;
     productArray[newProdIndex].markAsShown();
   }
-  console.log(renderedProds);
 }
-
 
 function renderReadyStatus() {
-  resultsButton.setAttribute('style', 'color: black; background-color: #ddd; box-shadow: 1px 1px 3px black;');
+  resultsButton.setAttribute(
+    'style',
+    'color: black; background-color: #ddd; box-shadow: 1px 1px 3px black;'
+  );
   readyStatusElem.innerText = 'Press "View Results"';
-  resultsReady = true;
 }
 
-function renderChart(){
+function renderChart() {
   let viewData = [];
   let voteData = [];
-  for (let i = 0; i < productArray.length; i++){
+  for (let i = 0; i < productArray.length; i++) {
     viewData[i] = productArray[i].views;
     voteData[i] = productArray[i].votes;
   }
   const ctxResults = document.getElementById('results-chart').getContext('2d');
-  const resultsChart = new Chart(ctxResults , { //eslint-disable-line
+  const resultsChart = new Chart(ctxResults, { //eslint-disable-line
     type: 'bar',
     data: {
       labels: productFiles,
-      datasets: [{
-        label:'# of votes',
-        data:voteData,
-        indexAxis: 'y',
-        backgroundColor: '#ada'
-      },
-      {
-        label:'# of views',
-        data:viewData,
-        indexAxis: 'y',
-      }]
+      datasets: [
+        {
+          label: '# of votes',
+          data: voteData,
+          indexAxis: 'y',
+          backgroundColor: '#ada',
+        },
+        {
+          label: '# of views',
+          data: viewData,
+          indexAxis: 'y',
+        },
+      ],
+    },
+    options: {
+      aspectRatio: (1/4)
     }
   });
 }
+
 /*
 HELPER FUNCTIONS
 */
 
-function constructProducts(productNameArr, productFileExtArr) {
+function constructProducts(
+  productNameArr,
+  productFileExtArr,
+  viewHistory,
+  voteHistory
+) {
   for (let i = 0; i < productNameArr.length; i++) {
-    let newProduct = new Product(productNameArr[i], productFileExtArr[i]);
+    let newProduct = new Product(
+      productNameArr[i],
+      productFileExtArr[i],
+      viewHistory[i],
+      voteHistory[i]
+    );
     productArray.push(newProduct);
   }
 }

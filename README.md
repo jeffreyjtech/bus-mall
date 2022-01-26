@@ -22,3 +22,7 @@ Bus Mall is a prestigious product catalog, found in your local public transporta
 - While I was at it, I added an image element "constructor" method to my product objects, which now handles adding product images to the page.
 - Finally, I've enclosed my new image chooser algorithm in a for loop controlled by a global "product quantity" variable, so it can display n-quantity of products.
 - The results are now displayed in a horizontal bar chart which is an improvement over the list display.
+
+### Lab 13
+
+- Thanks to my commitment to working with arrays in previous labs, working with JSON storage was easy. I even put in a button to clear the user's storage and conditional logic to handle a new user visiting the site.
