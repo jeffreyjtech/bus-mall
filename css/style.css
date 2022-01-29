@@ -10,13 +10,29 @@
 header{
   grid-column: 1/-1;
   grid-row: 1;
-  height: 35px;
+  height: 33px;
   padding-top: 15px;
-  padding-left: 15px;
+  padding-left: 30px;
+  padding-bottom: 5px;
+  border: inset rgb(38, 121, 216);
+  border-radius: 5px 30px;
+  background-image: url("/img/triangles-tiles-blue.png");
+  background-repeat: repeat-x;
 }
 h1{
   font-size: x-large;
-  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  font-family: 'Oxygen', sans-serif;
+  font-style: oblique;
+  font-weight: 400;
+  color: aliceblue;
+  text-shadow: black 3px 1px 3px;
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0px 12px 3px 12px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 4px 5px;
+  border-radius: 3px;
+  position: relative;
+  bottom: 2px;
 }
 aside{
   padding: 0.3em;
@@ -24,14 +40,24 @@ aside{
   width: 250px;
   grid-column: 1;
 }
+aside h2{
+  margin-bottom: 3px;
+}
 #results-status{
   font-style: italic;
   font-weight: 100;
+}
+main, aside{
+  border: solid rgb(38, 121, 216);
+  background:rgb(241, 246, 252);
+  border-radius: 5px 5px;
 }
 main{
   padding: 0.5em;
   grid-column: 2/-1;
   margin-right: 10%;
+  min-width: fit-content;
+  height: 406px;
 }
 main *{
   margin-top: 15px;
@@ -47,7 +73,7 @@ footer{
 }
 #img-container{
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
 section img{
@@ -55,6 +81,19 @@ section img{
   max-height: 250px;
   border: rgba(0, 0, 0, 0.479) 2px solid;
   border-radius: 5px;
+  margin: 0px 5px;
+  transition-duration: 0.5;
+}
+section img:hover{
+  transform: scale(1.03);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.479);
+  transition-duration: 0.35s;
+  cursor: pointer;
+}
+.btn:hover, .status-btn:hover{
+  transform: translateY(-1px);
+  transition-duration: 0.35s;
+  cursor: pointer;
 }
 .status-btn{
   color: grey;

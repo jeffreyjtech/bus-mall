@@ -120,7 +120,7 @@ function getUserHistory() {
   if (userHistory !== null){
     userHistory = JSON.parse(userHistory);
 
-    // Using the .map iterable method, I'm grabbing the views and votes for each retrieved object and creating parallel arrays
+    // Using the .map Iterable method, I'm grabbing the views and votes for each retrieved object and creating parallel arrays
     // The "simpler" but less DRY alternative would be a for loop.
     let voteHistory = userHistory.map((element) => {
       return element.votes;
@@ -141,10 +141,10 @@ EVENT HANDLERS
 
 // All of my interactivity is handled by this one handleClick function
 function handleClick(event) {
-  // This first block checks if a product was clicked and therefore voted on, and if the last voting has concluded
+  // This first block checks if a product was clicked and therefore voted on, and if the last voting round has concluded
   let clickedImgIndex = imgElems.indexOf(event.target);
   let productIndex = renderedProds[clickedImgIndex];
-  if (clickedImgIndex > -1) {
+  if (clickedImgIndex > -1 && !resultsReady) {
     productArray[productIndex].votes++;
     if (counter === maxRounds) {
       resultsReady = true;
