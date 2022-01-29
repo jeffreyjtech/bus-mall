@@ -29,3 +29,8 @@ Bus Mall is a prestigious product catalog, found in your local public transporta
 ### Lab 13
 
 - Thanks to my commitment to working with arrays in previous labs, working with JSON storage was easy. I even put in a button to clear the user's storage and conditional logic to handle a new user visiting the site.
+
+### Lab 15b
+
+- After learning about yet more CSS in yesterday's readings, I was able to make a webpage which honestly looks kinda snazzy. The "click-able" elements respond when you mouse over them. The responsive CSS, the header graphic, and the chart keep the page from being excessively plain. I'm very happy with it.
+- I think my CSS here is a great foundation for an actual website. It'd be a great design if it was combined with more features and content to fill the white-space.
