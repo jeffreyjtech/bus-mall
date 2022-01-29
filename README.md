@@ -8,6 +8,9 @@ Bus Mall is a prestigious product catalog, found in your local public transporta
 
 - Used [Meyerweb.com's Reset CSS](http://meyerweb.com/eric/tools/css/reset/) file.
 - Used [Chart.JS](https://www.chartjs.org/docs/latest/) library.
+- Used [Google Fonts](https://fonts.google.com/) for the H1 font.
+- Referred to this [CSS Border Radius Tutorial](https://www.tutorialbrain.com/css_tutorial/css_border_radius/) to make the header border.
+- Used [Public Domain Vectors](https://publicdomainvectors.org/en/free-clipart/Blue-triangles/85996.html) for the header background image.
 
 ## Reflections and Comments
 
