@@ -141,10 +141,10 @@ EVENT HANDLERS
 
 // All of my interactivity is handled by this one handleClick function
 function handleClick(event) {
-  // This first block checks if a product was clicked and therefore voted on, and if the last voting has concluded
+  // This first block checks if a product was clicked and therefore voted on, and if the last voting round has concluded
   let clickedImgIndex = imgElems.indexOf(event.target);
   let productIndex = renderedProds[clickedImgIndex];
-  if (clickedImgIndex > -1) {
+  if (clickedImgIndex > -1 && !resultsReady) {
     productArray[productIndex].votes++;
     if (counter === maxRounds) {
       resultsReady = true;
