@@ -12,11 +12,16 @@ header{
   grid-row: 1;
   height: 35px;
   padding-top: 15px;
-  padding-left: 15px;
+  padding-left: 30px;
+  padding-bottom: 5px;
+  border: inset rgb(38, 121, 216);
+  border-radius: 5px 30px;
 }
 h1{
   font-size: x-large;
-  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  /* font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
+  font-family: 'Oxygen', sans-serif;
+  font-style: italic;
 }
 aside{
   padding: 0.3em;
@@ -28,10 +33,16 @@ aside{
   font-style: italic;
   font-weight: 100;
 }
+main, aside{
+  border: solid rgb(38, 121, 216);
+  background:rgb(241, 246, 252);
+  border-radius: 5px 5px;
+}
 main{
   padding: 0.5em;
   grid-column: 2/-1;
   margin-right: 10%;
+  min-width: fit-content;
 }
 main *{
   margin-top: 15px;
@@ -55,6 +66,17 @@ section img{
   max-height: 250px;
   border: rgba(0, 0, 0, 0.479) 2px solid;
   border-radius: 5px;
+  margin: 0px 5px;
+  transition-duration: 0.5;
+}
+section img:hover{
+  transform: scale(1.03);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.479);
+  transition-duration: 0.5s;
+}
+.btn:hover, .status-btn:hover{
+  transform: translateY(-1px);
+  transition-duration: 0.35s
 }
 .status-btn{
   color: grey;
