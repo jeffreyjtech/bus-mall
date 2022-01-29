@@ -120,7 +120,7 @@ function getUserHistory() {
   if (userHistory !== null){
     userHistory = JSON.parse(userHistory);
 
-    // Using the .map iterable method, I'm grabbing the views and votes for each retrieved object and creating parallel arrays
+    // Using the .map Iterable method, I'm grabbing the views and votes for each retrieved object and creating parallel arrays
     // The "simpler" but less DRY alternative would be a for loop.
     let voteHistory = userHistory.map((element) => {
       return element.votes;
