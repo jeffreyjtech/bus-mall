@@ -16,7 +16,7 @@ header{
   padding-bottom: 5px;
   border: inset rgb(38, 121, 216);
   border-radius: 5px 30px;
-  background-image: url("/img/triangles-tiles-blue.png");
+  background-image: url("../img/triangles-tiles-blue.png");
   background-repeat: repeat-x;
 }
 h1{
